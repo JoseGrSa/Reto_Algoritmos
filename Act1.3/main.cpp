@@ -6,6 +6,7 @@
 
 using namespace std;
 
+
 vector<Entry> open(string path)
 {
     ifstream fileIn;
