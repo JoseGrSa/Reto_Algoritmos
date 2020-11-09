@@ -47,7 +47,7 @@ vector<Entry> open(string path)
 
 int main()
 {
-    string path = "C:\\School\\C++\\S_3_P_2\\Act_1.3\\equipo2.csv";
+    string path = "nuevo2.csv";
     vector<Entry> entries = open(path);
     string ip = "";
     
