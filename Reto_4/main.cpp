@@ -60,7 +60,7 @@ map<string, int> conexionesPorDia(string fecha, vector<Entry> entries)
     map<string, int> m;
     map<string, int>::iterator itr;
 
-    for (size_t i = 0; i < entries.size(); i++)
+    for (size_t i = 0; i < entries.size(); i++) 
     {
         if(entries[i].date == fecha && entries[i].mail != "-" && entries[i].mail.find("reto.com") == string::npos)
         {

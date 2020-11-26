@@ -1,8 +1,5 @@
 #include "ConexionesComputadora.h"
-#include <algorithm>
-#include <map>
-#include <iterator>
-#include <set>
+
 
 /* En este programa, usando la clase que creamos en el acto anterior (Act2.3) creamos un nuevo programa donde creamos un diccionario
 o mapa y usando varios fors, vinculamos las ips con un vector de todas las conecciones entrantes y salientes de estas mismas, ademas de un vector de strings  donde ponemos los nombres de los dominios que no 
@@ -53,8 +50,8 @@ int main()
     vector<Entry> entries = open(path);
     vector<string> domains;
     string domain = "reto.com";
-    vector <string> ips;
-    map<string, ConexionesComputadora> m;
+    
+    
     
     //Dominios sin reto.com
     for (size_t i = 0; i < entries.size(); i++)
@@ -80,38 +77,38 @@ int main()
     cout << endl << endl;
 
     // Imprimimos los dominios anomalos
-    cout << "Dominio Anomalo: 3oyp3rbdrclsnuy92kak.org" << "IP: 27.100.132.18" <<endl;
-    cout << "Dominio Anomalo: boaujv4jn8dh614k73r8.xxx" << "IP: 101.116.39.84" <<endl;
+    cout << "Dominio Anomalo: 3oyp3rbdrclsnuy92kak.org " << "IP: 27.100.132.18" <<endl;
+    cout << "Dominio Anomalo: boaujv4jn8dh614k73r8.xxx " << "IP: 101.116.39.84" <<endl;
 
 
-    //Creamos el mapa
+    set<string> all_ips;
     for (size_t i = 0; i < entries.size(); i++)
     {
         if(entries[i].orIP != "-")
-        {
-            ips.push_back(entries[i].orIP);
-        }
+            all_ips.insert(entries[i].orIP);
+        if(entries[i].desIP != "-")
+            all_ips.insert(entries[i].desIP);
     }
-    sort(ips.begin(), ips.end());
-    ips.erase(unique(ips.begin(), ips.end()), ips.end());
     
-    for (size_t i = 0; i < ips.size(); i++)
+    map<string, ConexionesComputadora> m;
+    //Creamos el mapa
+    for (auto itr = all_ips.begin(); itr != all_ips.end(); itr++)
     {
-        ConexionesComputadora h(ips[i], entries);
-        m.insert(pair<string,ConexionesComputadora>(ips[i], h));
+        ConexionesComputadora h(*itr, entries);
+        m[*itr] = h;
     }
+    
     
     //Pregunta 3
+
     int count = 0;
-    for (size_t i = 0; i < ips.size(); i++)
+    for (auto itr = m.begin(); itr != m.end(); itr++)
     {
-        for (size_t j = 0; j < entries.size(); j++)
+        if(itr->first.find("10.250.184") != string::npos)
         {
-            if(entries[j].desIP == ips[i])
-            {
+            itr->second.get_conexiones();
+            if(itr->second.conexionesEntrantes.size() > 0)
                 count++;
-                break;
-            }
         }
     }
     
@@ -136,7 +133,7 @@ int main()
     cout << endl << endl;
 
 
-    cout << "IP únicas entrantes: " << endl;
+    cout << "IP unicas entrantes: " << endl;
     for(auto itr = des_ip.begin(); itr != des_ip.end(); itr++)
     {
         cout << *itr << endl;
